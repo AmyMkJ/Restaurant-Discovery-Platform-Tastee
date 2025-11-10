@@ -1,0 +1,40 @@
+[
+  {
+    "name": "The Keg Steakhouse",
+    "description": "Upscale steakhouse chain serving prime rib, seafood & cocktails in an elegant atmosphere.",
+    "address": "515 Jarvis St, Toronto, ON M4Y 2H3",
+    "latitude": 43.6630,
+    "longitude": -79.3786,
+    "tags": ["Steakhouse", "Fine Dining", "Date Night", "American"],
+    "priceRange": 3,
+    "averageRating": 4.4,
+    "reviewCount": 567,
+    "isOpen": true
+  },
+  {
+    "name": "Kinton Ramen",
+    "description": "Japanese noodle bar specializing in authentic ramen bowls with rich broths and fresh noodles.",
+    "address": "396 Church St, Toronto, ON M5B 2A2",
+    "latitude": 43.6585,
+    "longitude": -79.3805,
+    "tags": ["Japanese", "Ramen", "Noodles", "Casual"],
+    "priceRange": 2,
+    "averageRating": 4.3,
+    "reviewCount": 432,
+    "isOpen": true
+  },
+  {
+    "name": "Canoe Restaurant",
+    "description": "Fine dining restaurant on the 54th floor with panoramic city views, serving modern Canadian cuisine.",
+    "address": "66 Wellington St W, Toronto, ON M5K 1H6",
+    "latitude": 43.6465,
+    "longitude": -79.3800,
+    "tags": ["Canadian", "Fine Dining", "Romantic", "View"],
+    "priceRange": 4,
+    "averageRating": 4.6,
+    "reviewCount": 892,
+    "isOpen": true
+  }
+]
+
+

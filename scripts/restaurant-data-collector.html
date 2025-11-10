@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Data Collector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #ef4444;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .tags-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        .tag {
+            background: #ef4444;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .tag button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .add-tag {
+            background: #f3f4f6;
+            padding: 5px 10px;
+            border-radius: 20px;
+            border: 1px dashed #ddd;
+            cursor: pointer;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background: #ef4444;
+            color: white;
+        }
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+        }
+        .output pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .helper-links {
+            margin-top: 20px;
+            padding: 15px;
+            background: #eff6ff;
+            border-radius: 4px;
+        }
+        .helper-links a {
+            color: #2563eb;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+        .helper-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍴 Restaurant Data Collector</h1>
+        <p>Fill in the form below to generate JSON data for your restaurant.</p>
+        
+        <form id="restaurantForm">
+            <div class="form-group">
+                <label>Restaurant Name *</label>
+                <input type="text" id="name" required placeholder="e.g., Terroni">
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="description" placeholder="Authentic Italian cuisine with wood-fired pizzas..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Full Address *</label>
+                <input type="text" id="address" required placeholder="57 Adelaide St E, Toronto, ON M5C 1K6">
+            </div>
+
+            <div class="form-group">
+                <label>Coordinates</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="font-size: 12px;">Latitude *</label>
+                        <input type="number" id="latitude" step="any" required placeholder="43.6497">
+                    </div>
+                    <div>
+                        <label style="font-size: 12px;">Longitude *</label>
+                        <input type="number" id="longitude" step="any" required placeholder="-79.3764">
+                    </div>
+                </div>
+                <p style="font-size: 12px; color: #666; margin-top: 5px;">
+                    💡 Tip: Get coordinates from Google Maps URL (look for @lat,lng) or right-click on map marker
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label>Tags *</label>
+                <div id="tagsContainer" class="tags-input"></div>
+                <input type="text" id="tagInput" placeholder="Type tag and press Enter" style="margin-top: 5px;">
+                <p style="font-size: 12px; color: #666; margin-top: 5px;">
+                    Examples: Italian, Pizza, Fine Dining, Romantic
+                </p>
+            </div>
+
+            <div class="form-group">
+                <label>Price Range *</label>
+                <select id="priceRange" required>
+                    <option value="1">$10-15 per person</option>
+                    <option value="2">$15-30 per person</option>
+                    <option value="3">$30-50 per person</option>
+                    <option value="4">$50+ per person</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Average Rating *</label>
+                <input type="number" id="averageRating" step="0.1" min="0" max="5" required placeholder="4.5">
+            </div>
+
+            <div class="form-group">
+                <label>Review Count *</label>
+                <input type="number" id="reviewCount" min="0" required placeholder="423">
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="isOpen" checked> Currently Open
+                </label>
+            </div>
+
+            <div class="buttons">
+                <button type="button" class="btn-primary" onclick="generateJSON()">Generate JSON</button>
+                <button type="button" class="btn-secondary" onclick="clearForm()">Clear</button>
+                <button type="button" class="btn-success" onclick="addToCollection()">Add to Collection</button>
+            </div>
+        </form>
+
+        <div class="output" id="output" style="display: none;">
+            <h3>Generated JSON:</h3>
+            <pre id="jsonOutput"></pre>
+            <button type="button" class="btn-primary" onclick="copyJSON()" style="margin-top: 10px;">Copy JSON</button>
+        </div>
+
+        <div class="output" id="collectionOutput" style="display: none;">
+            <h3>Collection (for copying to restaurants-data.json):</h3>
+            <pre id="collectionJSON"></pre>
+            <button type="button" class="btn-success" onclick="copyCollection()" style="margin-top: 10px;">Copy All</button>
+            <button type="button" class="btn-secondary" onclick="clearCollection()" style="margin-top: 10px;">Clear Collection</button>
+        </div>
+
+        <div class="helper-links">
+            <h4>Useful Links:</h4>
+            <a href="https://www.google.com/maps" target="_blank">Google Maps</a>
+            <a href="https://www.latlong.net/" target="_blank">LatLong Converter</a>
+            <a href="https://www.yelp.com" target="_blank">Yelp (for reviews)</a>
+        </div>
+    </div>
+
+    <script>
+        let tags = [];
+        let collection = [];
+
+        // Tag input handling
+        document.getElementById('tagInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const tag = this.value.trim();
+                if (tag && !tags.includes(tag)) {
+                    tags.push(tag);
+                    renderTags();
+                    this.value = '';
+                }
+            }
+        });
+
+        function renderTags() {
+            const container = document.getElementById('tagsContainer');
+            container.innerHTML = tags.map(tag => `
+                <span class="tag">
+                    ${tag}
+                    <button type="button" onclick="removeTag('${tag}')">×</button>
+                </span>
+            `).join('');
+        }
+
+        function removeTag(tag) {
+            tags = tags.filter(t => t !== tag);
+            renderTags();
+        }
+
+        function generateJSON() {
+            const data = {
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value || '',
+                address: document.getElementById('address').value,
+                latitude: parseFloat(document.getElementById('latitude').value),
+                longitude: parseFloat(document.getElementById('longitude').value),
+                tags: tags,
+                priceRange: parseInt(document.getElementById('priceRange').value),
+                averageRating: parseFloat(document.getElementById('averageRating').value),
+                reviewCount: parseInt(document.getElementById('reviewCount').value),
+                isOpen: document.getElementById('isOpen').checked
+            };
+
+            const json = JSON.stringify([data], null, 2);
+            document.getElementById('jsonOutput').textContent = json;
+            document.getElementById('output').style.display = 'block';
+        }
+
+        function copyJSON() {
+            const text = document.getElementById('jsonOutput').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('JSON copied to clipboard!');
+            });
+        }
+
+        function addToCollection() {
+            const data = {
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value || '',
+                address: document.getElementById('address').value,
+                latitude: parseFloat(document.getElementById('latitude').value),
+                longitude: parseFloat(document.getElementById('longitude').value),
+                tags: tags,
+                priceRange: parseInt(document.getElementById('priceRange').value),
+                averageRating: parseFloat(document.getElementById('averageRating').value),
+                reviewCount: parseInt(document.getElementById('reviewCount').value),
+                isOpen: document.getElementById('isOpen').checked
+            };
+
+            collection.push(data);
+            const json = JSON.stringify(collection, null, 2);
+            document.getElementById('collectionJSON').textContent = json;
+            document.getElementById('collectionOutput').style.display = 'block';
+            
+            clearForm();
+        }
+
+        function copyCollection() {
+            const text = document.getElementById('collectionJSON').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Collection copied to clipboard! Paste into restaurants-data.json');
+            });
+        }
+
+        function clearCollection() {
+            if (confirm('Clear all collected restaurants?')) {
+                collection = [];
+                document.getElementById('collectionOutput').style.display = 'none';
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('restaurantForm').reset();
+            tags = [];
+            renderTags();
+            document.getElementById('output').style.display = 'none';
+        }
+
+        // Auto-fill coordinates from Google Maps URL (if pasted)
+        document.getElementById('address').addEventListener('paste', function(e) {
+            setTimeout(() => {
+                const url = this.value;
+                const match = url.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+                if (match) {
+                    document.getElementById('latitude').value = match[1];
+                    document.getElementById('longitude').value = match[2];
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
+
